@@ -1,21 +1,12 @@
-# 3주차 데이터 링크
+# 3주차 데이터와 모델 링크
 
-## FashionMNIST
+다운로드 대상은 아래 링크에서 직접 확보하세요. 이 자료에는 원문·데이터·모델 가중치 파일이 들어 있지 않습니다.
 
-- [torchvision FashionMNIST 데이터 안내](https://docs.pytorch.org/vision/stable/generated/torchvision.datasets.FashionMNIST.html)
-- [PyTorch 데이터와 DataLoader 설명](https://docs.pytorch.org/tutorials/beginner/basics/data_tutorial.html)
+- [FashionMNIST 데이터 안내](https://docs.pytorch.org/vision/stable/generated/torchvision.datasets.FashionMNIST.html)
 
-링크의 데이터 확보 기능과 사용법을 확인해 직접 다운로드하세요. 이 패키지에는 이미지나 label 파일이 들어 있지 않습니다.
+## 확보한 뒤 확인할 사항
 
-## 확보한 뒤 확인할 내용
+- 공식 훈련 데이터를 train·validation으로 나누고 공식 test는 설정 확정 후 평가에 사용합니다.
+- CPU와 작은 부분집합으로 시작하며 크기·선택 규칙·seed를 기록합니다. 부분집합 결과를 전체 데이터 성능으로 표현하지 않습니다.
 
-- 공식 훈련 데이터와 공식 test의 역할
-- 이미지와 label의 의미 및 shape
-- train과 validation의 분할 기준
-- 작은 부분집합의 선택 규칙과 크기
-- 데이터 보관 위치와 다운로드 여부
-- 학습과 추론에 사용할 전처리
-
-작은 부분집합을 사용할 경우 클래스 분포를 확인하세요. 줄인 데이터의 결과를 전체 데이터에서 얻은 성능으로 표현하지 않습니다. 공식 test는 최종 평가를 위해 남깁니다.
-
-이미지와 다운로드 캐시는 로컬에 보관합니다. Git에는 출처와 확보 방법, 사용한 범위와 결과 기록을 남기세요.
+출처·확보 날짜·원본 파일 또는 모델명·버전·로컬 경로·사용 범위를 기록합니다. 라이브러리는 [이름 목록](../LIBRARIES.md)을 확인합니다.

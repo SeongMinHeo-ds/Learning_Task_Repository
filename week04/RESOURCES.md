@@ -1,23 +1,20 @@
 # 4주차 참고 자료
 
-이번 주에는 선택한 프로젝트에 필요한 기존 자료를 다시 찾아 적용합니다. 새로운 라이브러리를 많이 추가하지 않아도 됩니다.
+과제를 읽고 현재 작업에 필요한 자료부터 찾아보세요. 공식 예제는 참고할 수 있지만 과제의 입력·출력·설정에 맞추어 직접 구현하고 변경 내용을 설명합니다.
 
-| 자료 | 찾아볼 내용 | 연결 목표 |
-|---|---|---|
-| [프로젝트 계획 양식](../templates/PROJECT_PROPOSAL.md) | 목적, 입력·출력, 실패 동작, 개선과 완료 기준 | L16 |
-| [argparse](https://docs.python.org/3/library/argparse.html) | 학습·평가·예측 기능의 실행 인자와 도움말 | L17 |
-| [2주차 참고 자료](../week02/RESOURCES.md) | Pipeline, 모델 저장, 평가 조건 | Titanic 또는 Wine |
-| [3주차 참고 자료](../week03/RESOURCES.md) | 모델과 전처리, 학습·검증, 저장·로드 | FashionMNIST |
-| [Git 공식 튜토리얼](https://git-scm.com/docs/gittutorial) | 변경 검토, 커밋과 리뷰 반영 | L19 |
-| [주간 보고서 양식](../templates/WEEKLY_REPORT.md) | 검증 근거, 실험 조건, 남은 문제 | L18~L20 |
+| 자료 | 찾아볼 내용 | 읽을 시점 |
+| --- | --- | --- |
+| [LLM 추론](https://huggingface.co/docs/transformers/main/en/llm_tutorial) | tokenizer·모델 로드·generate와 입력 길이 | 먼저 |
+| [Chat templates](https://huggingface.co/docs/transformers/main/en/chat_templating) | role·template·생성 시작점 | 먼저 |
+| [텍스트 생성 설정](https://huggingface.co/docs/transformers/main/en/generation_strategies) | 생성 길이·sampling·일관된 비교 조건 | 필요할 때 |
+| [Qwen3 모델 카드](https://huggingface.co/Qwen/Qwen3-0.6B) | 지원 환경·thinking 모드·실제 추론 조건 | 필요할 때 |
 
-## 리뷰 전에 확인할 질문
+## 확인 질문
 
-- 다른 사람이 확보해야 할 데이터와 준비할 환경이 문서에 있나요?
-- 학습을 다시 하지 않고 예측만 실행할 수 있나요?
-- 개선 효과를 판단할 비교 조건이 같은가요?
-- 실패한 입력이 왜 실패했는지 알 수 있나요?
-- 현재 모델의 한계를 어떤 결과로 확인했나요?
-- 가장 작은 수정으로 해결할 남은 문제는 무엇인가요?
+- L16: 문자 수와 token 수가 다르면 context 제한을 어떻게 확인하나요?
+- L17: 모델 로드 시간과 질문 한 건의 생성 시간을 어떻게 구분했나요?
+- L18: 답변 변화가 어떤 설정 때문인지 비교표에서 보여주세요.
+- L19: 입력이 너무 길거나 모델 출력 형식이 틀리면 사용자에게 무엇이 보이나요?
+- L20: 그럴듯한 답변과 문서로 확인한 답변은 어떻게 구분하나요?
 
-출처 확인일: 2026-10-06.
+자료 확인일: 2026-10-06. 문서의 버전과 실제 사용한 버전이 다를 수 있으므로 실행 환경과 모델 revision을 남깁니다.

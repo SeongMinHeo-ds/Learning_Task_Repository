@@ -1,28 +1,13 @@
-# 4주차 데이터 링크
+# 4주차 데이터와 모델 링크
 
-새 데이터는 필수로 추가하지 않습니다. 선택한 프로젝트의 기존 데이터를 재사용하고 같은 분할 또는 선택 규칙을 유지합니다.
+다운로드 대상은 아래 링크에서 직접 확보하세요. 이 자료에는 원문·데이터·모델 가중치 파일이 들어 있지 않습니다.
 
-## Titanic
+- [생성 모델 Qwen3-0.6B](https://huggingface.co/Qwen/Qwen3-0.6B)
 
-- [Kaggle Titanic 데이터](https://www.kaggle.com/competitions/titanic/data)
-- [2주차 데이터 안내](../week02/DATA.md)
+## 확보한 뒤 확인할 사항
 
-## FashionMNIST
+- 모델 파일은 링크에서 직접 확보합니다. 모델명·revision·라이브러리 버전·장치·생성 설정을 기록합니다.
+- 모델 카드의 지원 조건과 추론 모드를 확인합니다. 작은 모델의 답변 품질과 실제 실행 속도는 실습 환경에서 평가합니다.
+- 접근 또는 장치 문제가 있으면 교육자가 승인한 모델이나 추론 환경으로 변경하고 비교 모델과 설정을 고정합니다.
 
-- [torchvision FashionMNIST](https://docs.pytorch.org/vision/stable/generated/torchvision.datasets.FashionMNIST.html)
-- [3주차 데이터 안내](../week03/DATA.md)
-
-## Wine 대체 프로젝트
-
-- [UCI Wine 데이터](https://archive.ics.uci.edu/dataset/109/wine)
-- [2주차 대체 과제 안내](../week02/DATA.md)
-
-## 최종 보고서에 남길 내용
-
-- 사용한 데이터 출처와 범위
-- train, validation, 최종 평가의 구분과 분할 규칙
-- 개선 전후 동일하게 유지한 데이터
-- 최종 평가 데이터를 처음 사용한 시점
-- 다른 사람이 데이터와 분할을 재현하는 방법
-
-데이터 파일은 직접 확보하고 로컬에 보관합니다. 이 패키지에는 원본 데이터가 포함되어 있지 않습니다.
+출처·확보 날짜·원본 파일 또는 모델명·버전·로컬 경로·사용 범위를 기록합니다. 라이브러리는 [이름 목록](../LIBRARIES.md)을 확인합니다.

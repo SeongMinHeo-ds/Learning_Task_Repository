@@ -1,39 +1,38 @@
-# 3주차 FashionMNIST 딥러닝 학습과 추론
+# 3주차 딥러닝과 Attention 기본 연산
 
-이번 주에는 작은 MLP로 이미지 분류를 수행합니다. tensor와 배치에서 시작해 forward, loss, gradient, optimizer, 검증, 저장과 추론의 흐름을 설명하는 것이 목표입니다.
+이번 주 실습은 **FashionMNIST MLP와 작은 Attention 연산**입니다. 대응 ID는 L11~L15, 계획시간은 30시간입니다.
 
-대응 작업은 L11~L15입니다. [참고 자료](RESOURCES.md), [데이터 링크](DATA.md), [목표 체크리스트](CHECKLIST.md)를 확인하세요.
+[참고 자료](RESOURCES.md) · [데이터와 모델 링크](DATA.md) · [체크리스트](CHECKLIST.md)
 
 ## 과제
 
-FashionMNIST를 확보하고 이미지와 label을 확인하세요. 공식 훈련 데이터 안에서 train과 validation을 나누고 공식 test는 최종 평가에 남깁니다. CPU에서 부담 없이 실행할 수 있도록 작은 부분집합부터 시작하고 사용한 수와 선택 규칙을 기록합니다.
+FashionMNIST의 작은 부분집합으로 MLP를 구성합니다. NumPy와 tensor의 shape·dtype을 비교하고 한 배치의 입력부터 loss까지 따라갑니다.
 
-공식 예제의 MLP와 학습 루프를 읽고 과제에 맞게 직접 구성하세요. flatten, Linear, activation과 출력 logits의 역할을 설명하고 실제 tensor의 shape를 확인합니다. 학습 단계에서 loss와 gradient가 어떻게 사용되는지 기록하세요.
+학습과 validation을 나누고 epoch별 loss·accuracy를 기록합니다. state_dict를 저장하고 별도 실행에서 재로드하며 설정 확정 후 공식 test를 평가합니다.
 
-학습·검증 지표를 epoch별로 남기고 오분류 사례를 확인합니다. state_dict로 모델 파라미터를 저장한 뒤 별도 실행에서 불러와 예측합니다. 기존 실행의 메모리 상태에 의존하지 않아야 합니다.
+작은 tensor의 Q, K, V로 scaled dot-product attention을 확인합니다. softmax 축과 causal mask를 바꾸어 출력 차이를 확인하고 전체 Transformer 학습 대신 연산과 shape를 설명합니다.
 
-## 결과에 포함할 내용
+## 일별 작업과 결과
 
-- 한 배치의 입력과 label의 shape, dtype과 의미
-- 모델 구조와 단계별 입력·출력 shape
-- 사용한 loss, optimizer, learning rate, batch size, epoch, seed와 장치
-- 학습·검증 loss와 accuracy 기록 및 곡선
-- validation의 오분류 사례 5개와 해석
-- 저장·재로드 전후 같은 입력의 예측 비교
-- 모델을 불러와 입력 이미지를 예측하는 실행 기능
+| 일차 | ID | 작업 | 산출물 |
+| --- | --- | --- | --- |
+| 11 | L11 | tensor autograd와 DataLoader | 배치 shape와 gradient 확인 |
+| 12 | L12 | MLP forward와 loss | 모델 구조와 loss 입력 표 |
+| 13 | L13 | 학습 루프와 지표 기록 | epoch별 loss·accuracy 기록 |
+| 14 | L14 | 검증 저장과 별도 추론 | 곡선·오분류·재로드·test 결과 |
+| 15 | L15 | Attention shape와 causal mask | Q K V와 mask 전후 출력 노트 |
 
-오분류가 5개보다 적다면 확인한 전부를 제시하고 이유를 적습니다. 이미지 입력은 일반 이미지 파일 또는 데이터셋의 이미지 지정 방식 중 하나로 정하되, 입력 계약과 전처리를 분명히 기록하세요.
+## 제출할 산출물
 
-## 스스로 확인할 조건
+- 배치·gradient·forward shape 기록
+- 학습·검증 곡선과 오분류 분석
+- state_dict 저장·재로드와 확정 모델 test 결과
+- 작은 Attention shape·mask 비교 노트
 
-zero_grad, backward, optimizer.step의 순서와 역할을 설명하세요. train과 eval 모드, gradient를 계산하는 구간과 계산하지 않는 구간을 구분합니다. loss에 들어가는 출력과 정답의 shape와 dtype이 맞는지 확인하세요.
+## 주간 완료 기준
 
-저장 전후 비교는 같은 입력, 장치, 전처리와 평가 모드에서 합니다. 반복 실행의 차이가 있다면 원인을 확인하고 비교 허용 범위를 기록합니다.
+학습 루프와 별도 추론을 재현하고 QK 전치 곱과 mask의 shape를 설명한다.
 
-validation을 보고 조정한 설정과 결과는 실험 기록에 남깁니다. 공식 test를 반복 확인하여 모델을 선택하지 않습니다. 최종 test 평가는 4주차에 이 프로젝트를 선택할 경우 수행합니다.
+**선택 확장:** CNN, Transformer 전체 구현과 GPU 최적화는 확장 과제입니다.
 
-## 제출
-
-데이터 처리와 모델 코드, 학습·검증 기록, 곡선, 오분류 분석, 저장·추론 코드와 [주간 보고서](../templates/WEEKLY_REPORT.md)를 제출합니다. 참고한 공식 예제와 직접 변경한 내용을 적으세요.
-
-CNN이나 사전학습 모델로 범위를 넓히는 것은 필수 목표를 마친 뒤의 선택입니다. 이번 주 필수 범위는 작은 MLP입니다.
+코드 구조와 명령 이름은 직접 정하고 실제 사용 방법을 README에 기록합니다. [주간 보고서](../templates/WEEKLY_REPORT.md)에 실행·설명·검증 증빙을 남기세요. LLM과 RAG 평가는 [공통 평가 기준](../EVALUATION.md)을 사용합니다.

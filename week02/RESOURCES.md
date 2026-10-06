@@ -1,31 +1,24 @@
 # 2주차 참고 자료
 
-과제를 읽고 데이터 흐름과 평가 조건을 먼저 정리하세요. 필요한 API는 공식 문서에서 직접 찾아 적용합니다.
+과제를 읽고 현재 작업에 필요한 자료부터 찾아보세요. 공식 예제는 참고할 수 있지만 과제의 입력·출력·설정에 맞추어 직접 구현하고 변경 내용을 설명합니다.
 
-## 먼저 볼 자료
+| 자료 | 찾아볼 내용 | 읽을 시점 |
+| --- | --- | --- |
+| [pandas 입문](https://pandas.pydata.org/docs/user_guide/10min.html) | 결측·자료형·집계와 선택 복습 | 먼저 |
+| [pandas merge와 join](https://pandas.pydata.org/docs/user_guide/merging.html) | key, 결합 유형과 중복으로 인한 행 수 변화 | 먼저 |
+| [데이터 누수와 흔한 실수](https://scikit-learn.org/stable/common_pitfalls.html) | fit 대상과 전처리 일관성 | 먼저 |
+| [Pipeline과 ColumnTransformer](https://scikit-learn.org/stable/modules/compose.html) | 전처리와 모델 연결 | 먼저 |
+| [분할 API](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) | 분할·seed·계층화 | 필요할 때 |
+| [scikit-learn API](https://scikit-learn.org/stable/api/index.html) | baseline·분류기·인코딩·결측 처리 | 필요할 때 |
+| [분류 지표](https://scikit-learn.org/stable/modules/model_evaluation.html) | accuracy와 confusion matrix | 필요할 때 |
+| [모델 저장](https://scikit-learn.org/stable/model_persistence.html) | Pipeline 저장·재로드와 환경 기록 | 필요할 때 |
 
-| 자료 | 찾아볼 내용 | 연결 목표 |
-|---|---|---|
-| [Titanic 대회 소개](https://www.kaggle.com/competitions/titanic) | 예측 문제, 데이터와 결과의 의미 | L06 |
-| [train_test_split](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) | 분할, seed, 계층화 | L07 |
-| [Common pitfalls](https://scikit-learn.org/stable/common_pitfalls.html) | 데이터 누수와 전처리 일관성 | L07·L08 |
-| [Pipeline과 ColumnTransformer](https://scikit-learn.org/stable/modules/compose.html) | 전처리와 모델 연결, 열별 처리 | L08 |
+## 확인 질문
 
-## 구현 중 찾아볼 자료
+- L06: merge 후 행 수가 늘었다면 어떤 key를 먼저 확인하나요?
+- L07: validation을 보고 고른 모델의 최종 평가에는 어떤 데이터를 써야 하나요?
+- L08: scaling과 결측 통계가 어디서 계산되는지 코드에서 보여주세요.
+- L09: 저장 전후 예측이 같다는 것을 무엇으로 확인했나요?
+- L10: 학습을 다시 실행하지 않고 예측만 수행할 수 있나요?
 
-| 자료 | 찾아볼 내용 | 연결 목표 |
-|---|---|---|
-| [scikit-learn API 목록](https://scikit-learn.org/stable/api/index.html) | DummyClassifier, LogisticRegression, DecisionTreeClassifier, 결측 처리와 인코딩 | L07~L09 |
-| [분류 평가 지표](https://scikit-learn.org/stable/modules/model_evaluation.html) | accuracy, confusion matrix와 지표의 한계 | L09 |
-| [Model persistence](https://scikit-learn.org/stable/model_persistence.html) | Pipeline 저장, 재로드와 환경 기록 | L10 |
-
-## 읽은 뒤 확인할 질문
-
-- baseline은 무엇과 비교하기 위한 것인가요?
-- train, validation, holdout과 Kaggle test 파일은 어떤 차이가 있나요?
-- 결측값 처리 기준을 전체 데이터에서 계산하면 평가에 어떤 영향을 줄 수 있나요?
-- 처음 보는 범주가 들어오면 선택한 전처리는 어떻게 동작하나요?
-- 정확도가 같은 모델이라도 다른 오류를 낼 수 있나요?
-- 전처리를 포함해 저장하는 이유는 무엇인가요?
-
-출처 확인일: 2026-10-06.
+자료 확인일: 2026-10-06. 문서의 버전과 실제 사용한 버전이 다를 수 있으므로 실행 환경과 모델 revision을 남깁니다.

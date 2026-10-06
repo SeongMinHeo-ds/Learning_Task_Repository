@@ -2,6 +2,7 @@
 
 ## 1주차
 
+- numpy
 - pandas
 
 ## 2주차
@@ -21,19 +22,31 @@
 
 ## 4주차
 
-선택한 프로젝트에 해당하는 목록을 사용합니다.
+- torch
+- transformers
+- accelerate
+- safetensors
 
-### Titanic
+## 5주차
 
 - numpy
 - pandas
 - scikit-learn
-- matplotlib
-- joblib
+- sentence-transformers
+- torch
+- requests
+- beautifulsoup4
 
-### FashionMNIST
+## 6주차
 
 - numpy
+- pandas
+- scikit-learn
 - torch
-- torchvision
-- matplotlib
+- transformers
+- accelerate
+- safetensors
+- sentence-transformers
+- chromadb
+- requests
+- beautifulsoup4
