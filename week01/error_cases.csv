@@ -1,0 +1,4 @@
+﻿case,expected,actual,evidence
+file_not_found,FileNotFoundError 발생 안내,입력 파일을 찾을 수 없습니다: data/no_file.csv,[Error] 입력 파일을 찾을 수 없습니다: data/no_file.csv
+invalid_column,KeyError 발생 안내,지정한 열 'unknown_col'이(가) 데이터에 존재하지 않습니다.,[Error] 지정한 열 'unknown_col'이(가) 데이터에 존재하지 않습니다.
+invalid_threshold,ValueError 변환 실패 및 종료,threshold 인자는 숫자여야 합니다. 입력값: 'abc',[Error] --threshold 인자는 숫자여야 합니다. 입력값: 'abc'

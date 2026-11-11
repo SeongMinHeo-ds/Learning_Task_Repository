@@ -25,11 +25,14 @@
 
 ## L03 함수·파일·JSON·실행 인자
 
-- [ ] functions_io.md: print와 return을 구분하고 함수 이름만으로 역할을 설명할 수 있게 한다.
-- [ ] src/wine_cli.py의 실행 골격: 다른 입력 경로와 출력 폴더를 전달할 수 있어야 한다.
-- [ ] error_cases.csv: 기대 결과·실제 메시지·실행 성공 여부를 구분한다. 이 단계는 최종 필터 구현 후 다시 확인한다.
+- [x] functions_io.md: print와 return을 구분하고 함수 이름만으로 역할을 설명할 수 있게 한다.
+- [x] src/wine_cli.py의 실행 골격: 다른 입력 경로와 출력 폴더를 전달할 수 있어야 한다.
+- [x] error_cases.csv: 기대 결과·실제 메시지·실행 성공 여부를 구분한다. 이 단계는 최종 필터 구현 후 다시 확인한다.
 
 증빙 경로·링크:
+- 실행 코드: src/wine_cli.py
+- 산출물: week01/functions_io.md, week01/error_cases.csv
+- 검증 내용: read_data/filter_rows/summarize/save_outputs 분리 및 3종 오류 케이스 처리 확인
 
 ## L04 NumPy 결과를 손계산과 대조
 
