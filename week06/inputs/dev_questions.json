@@ -1,0 +1,172 @@
+[
+  {
+    "question_id": "Q01",
+    "question": "목록 끝에 원소 하나를 추가하는 방법은?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D01"
+    ],
+    "expected_answer": "list의 append를 사용한다."
+  },
+  {
+    "question_id": "Q02",
+    "question": "중복을 없애고 교집합을 구할 때 쓸 자료구조는?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D01"
+    ],
+    "expected_answer": "set을 사용한다."
+  },
+  {
+    "question_id": "Q03",
+    "question": "dict 키가 되려면 어떤 조건을 만족해야 하나요?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D01"
+    ],
+    "expected_answer": "hashable이어야 한다."
+  },
+  {
+    "question_id": "Q04",
+    "question": "return과 print는 무엇이 다른가요?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D02"
+    ],
+    "expected_answer": "return은 호출자에게 값을 돌려주고 print는 화면에 출력한다."
+  },
+  {
+    "question_id": "Q05",
+    "question": "변경 가능한 기본 인자를 사용할 때 주의할 점은?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D02"
+    ],
+    "expected_answer": "기본 인자가 정의 시 한 번 평가되어 호출 간에 객체가 공유될 수 있다."
+  },
+  {
+    "question_id": "Q06",
+    "question": "Python 모듈을 불러오는 문장은?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D03"
+    ],
+    "expected_answer": "import를 사용한다."
+  },
+  {
+    "question_id": "Q07",
+    "question": "파일을 직접 실행했는지는 어떤 이름으로 구분하나요?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D03"
+    ],
+    "expected_answer": "__name__이 __main__인지 확인한다."
+  },
+  {
+    "question_id": "Q08",
+    "question": "파일을 사용한 뒤 자동으로 닫도록 돕는 구문은?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D04"
+    ],
+    "expected_answer": "with 문을 사용한다."
+  },
+  {
+    "question_id": "Q09",
+    "question": "JSON 파일을 읽는 함수와 쓰는 함수는?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D04"
+    ],
+    "expected_answer": "json.load로 읽고 json.dump로 쓴다."
+  },
+  {
+    "question_id": "Q10",
+    "question": "파일이 없을 때 발생할 수 있는 예외는?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D05"
+    ],
+    "expected_answer": "FileNotFoundError다."
+  },
+  {
+    "question_id": "Q11",
+    "question": "예외 여부와 관계없이 블록 종료 시 실행하는 부분은?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D05"
+    ],
+    "expected_answer": "finally 블록이다."
+  },
+  {
+    "question_id": "Q12",
+    "question": "인스턴스 메서드의 self는 무엇인가요?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D06"
+    ],
+    "expected_answer": "메서드를 호출한 인스턴스를 가리킨다."
+  },
+  {
+    "question_id": "Q13",
+    "question": "클래스와 인스턴스의 관계는?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D06"
+    ],
+    "expected_answer": "인스턴스는 클래스로 만든 객체다."
+  },
+  {
+    "question_id": "Q14",
+    "question": "파일 경로를 처리하는 표준 라이브러리 모듈은?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D07"
+    ],
+    "expected_answer": "pathlib이다."
+  },
+  {
+    "question_id": "Q15",
+    "question": "프로젝트마다 패키지 버전을 분리하는 방법은?",
+    "answerable": true,
+    "relevant_doc_ids": [
+      "D08"
+    ],
+    "expected_answer": "프로젝트별 가상환경을 사용한다."
+  },
+  {
+    "question_id": "Q16",
+    "question": "이 회사의 내년 연봉 인상률은?",
+    "answerable": false,
+    "relevant_doc_ids": [],
+    "expected_answer": "제공된 문서에서 확인할 수 없다."
+  },
+  {
+    "question_id": "Q17",
+    "question": "다음 주 서울의 정확한 날씨는?",
+    "answerable": false,
+    "relevant_doc_ids": [],
+    "expected_answer": "제공된 문서에서 확인할 수 없다."
+  },
+  {
+    "question_id": "Q18",
+    "question": "내 개인 계정의 비밀번호는?",
+    "answerable": false,
+    "relevant_doc_ids": [],
+    "expected_answer": "제공된 문서에서 확인할 수 없다."
+  },
+  {
+    "question_id": "Q19",
+    "question": "현재 사내 GPU 서버의 남은 메모리는?",
+    "answerable": false,
+    "relevant_doc_ids": [],
+    "expected_answer": "제공된 문서에서 확인할 수 없다."
+  },
+  {
+    "question_id": "Q20",
+    "question": "내일 특정 주식의 종가는?",
+    "answerable": false,
+    "relevant_doc_ids": [],
+    "expected_answer": "제공된 문서에서 확인할 수 없다."
+  }
+]

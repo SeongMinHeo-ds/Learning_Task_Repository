@@ -1,61 +1,43 @@
-# 3주차 목표 체크리스트
+# 3주차 완료 체크리스트
 
-직접 실행·설명·검증하고 증빙을 남긴 조건만 체크합니다. 각 ID는 엑셀의 같은 작업 ID와 대응합니다.
+[상세 가이드](README.md)의 각 일차를 완료한 뒤 실제 증빙을 연결한다.
 
-## L11 tensor autograd와 DataLoader
+## L11 데이터·tensor·gradient 확인
 
-완료 조건: NumPy와 tensor의 dtype·shape, batch와 gradient 계산을 작은 입력으로 설명한다.
+- [ ] training_config.json 초안: train·validation index가 겹치지 않고 test는 공식 별도 묶음이다.
+- [ ] tensor_shapes_and_gradient.json: 이미지는 [128,1,28,28] float32, label은 [128] int64다.
+- [ ] 작은 gradient 결과: gradient [4,6]과 requires_grad의 역할을 설명한다.
 
-- [ ] NumPy와 tensor 변환·dtype·장치를 비교한다.
-- [ ] DataLoader의 이미지·label shape를 확인한다.
-- [ ] 작은 연산의 gradient와 requires_grad를 확인한다.
-
-증빙 경로 또는 링크:
+증빙 경로·링크:
 
 ## L12 MLP forward와 loss
 
-완료 조건: flatten·Linear·activation·logits와 loss 입력의 shape·dtype을 설명한다.
+- [ ] 층별 입력·출력 표: [128,784]→[128,64]→[128,10] 흐름을 확인한다.
+- [ ] loss·logits·정답 조건 기록: loss 전에 softmax를 중복 적용하지 않는다. label dtype과 범위를 확인한다.
+- [ ] 오류 관찰 기록: 어느 조건이 loss 입력과 맞지 않는지 설명한다.
 
-- [ ] 작은 MLP를 직접 구성한다.
-- [ ] 층별 입력·출력 shape와 logits를 확인한다.
-- [ ] loss의 출력과 정답 입력 조건을 설명한다.
+증빙 경로·링크:
 
-증빙 경로 또는 링크:
+## L13 학습 루프와 5 epoch 기록
 
-## L13 학습 루프와 지표 기록
+- [ ] 학습 루프와 역할 설명: 업데이트 전후 파라미터가 실제로 달라지는지 작은 배치로 확인한다.
+- [ ] training_history.csv: 정확히 5행이며 loss는 샘플 수로 가중 평균한다.
+- [ ] 선택 기준과 checkpoint 기록: 마지막 epoch와 best epoch를 무조건 같다고 가정하지 않는다.
 
-완료 조건: zero_grad·backward·step의 순서와 역할을 설명하고 학습 지표를 기록한다.
+증빙 경로·링크:
 
-- [ ] 학습 루프에서 gradient 초기화·계산·업데이트를 확인한다.
-- [ ] 장치·batch·epoch·seed와 optimizer 설정을 남긴다.
-- [ ] epoch별 학습·검증 지표를 저장한다.
+## L14 최종 평가·그림·별도 재로드
 
-증빙 경로 또는 링크:
+- [ ] learning_curves.png, misclassified_examples.png/.json: 그림의 값은 CSV와 같아야 하며 원인을 이미지 하나만으로 단정하지 않는다.
+- [ ] test_result.json: 평가 개수와 선택 규칙을 명시하고 전체 10000개 성능으로 표시하지 않는다.
+- [ ] reload_check.json: logits는 atol=1e-5로 대조하고 최대 오차·예측 일치·별도 프로세스 여부를 기록한다.
 
-## L14 검증 저장과 별도 추론
+증빙 경로·링크:
 
-완료 조건: 검증 모드와 gradient 비활성화를 구분하고 확정 모델 저장·추론을 재현한다.
+## L15 Attention 축과 causal mask
 
-- [ ] 곡선과 오분류 사례 5개를 분석한다.
-- [ ] state_dict 저장·재로드를 별도 실행에서 비교한다.
-- [ ] 확정 모델의 공식 test 평가와 한계를 기록한다.
+- [ ] attention_results.json의 mask 없는 값: 점수 [3,3], 가중치 [3,3], 출력 [3,2]를 확인한다.
+- [ ] mask 전후 가중치와 출력: 미래 위치 가중치 합은 0, 각 행의 합은 약 1이다.
+- [ ] attention_notes.md: 다음 토큰 예측에서 미래 정보를 막는 이유와 전체 Transformer 구현과의 차이를 설명한다.
 
-증빙 경로 또는 링크:
-
-## L15 Attention shape와 causal mask
-
-완료 조건: 작은 Q K V의 행렬곱·scaling·softmax·causal mask를 설명하고 출력 차이를 확인한다.
-
-- [ ] Q K V와 점수·가중치·출력 shape를 기록한다.
-- [ ] softmax 축과 causal mask를 작은 입력에서 확인한다.
-- [ ] 미래 토큰 정보 차단과 다음 토큰 예측을 연결해 설명한다.
-
-증빙 경로 또는 링크:
-
-## 주간 회고
-
-- 완료한 ID:
-- 미완료 조건과 원인:
-- 다음 확인 또는 보충:
-
-[주간 보고서](../templates/WEEKLY_REPORT.md)에 실제 시간을 남기고 교육자와 상태를 확인합니다.
+증빙 경로·링크:

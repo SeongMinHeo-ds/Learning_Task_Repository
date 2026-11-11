@@ -1,0 +1,89 @@
+{
+  "independent_holdout": false,
+  "questions": [
+    {
+      "question_id": "F01",
+      "question": "tuple의 순서와 변경 가능성을 설명하세요.",
+      "answerable": true,
+      "relevant_doc_ids": [
+        "D01"
+      ],
+      "expected_answer": "순서가 있는 변경 불가능한 묶음이다."
+    },
+    {
+      "question_id": "F02",
+      "question": "함수를 정의하는 키워드는 무엇인가요?",
+      "answerable": true,
+      "relevant_doc_ids": [
+        "D02"
+      ],
+      "expected_answer": "def다."
+    },
+    {
+      "question_id": "F03",
+      "question": "모듈 이름과 같은 파일명을 만들 때 어떤 문제가 있나요?",
+      "answerable": true,
+      "relevant_doc_ids": [
+        "D03"
+      ],
+      "expected_answer": "의도한 모듈을 가리는 이름 충돌이 생길 수 있다."
+    },
+    {
+      "question_id": "F04",
+      "question": "텍스트 파일을 열 때 문자 인코딩은 어디에 지정하나요?",
+      "answerable": true,
+      "relevant_doc_ids": [
+        "D04"
+      ],
+      "expected_answer": "open의 encoding에 지정한다."
+    },
+    {
+      "question_id": "F05",
+      "question": "예외를 직접 발생시키거나 전파하는 키워드는?",
+      "answerable": true,
+      "relevant_doc_ids": [
+        "D05"
+      ],
+      "expected_answer": "raise다."
+    },
+    {
+      "question_id": "F06",
+      "question": "기존 클래스의 동작을 확장하는 관계는?",
+      "answerable": true,
+      "relevant_doc_ids": [
+        "D06"
+      ],
+      "expected_answer": "상속이다."
+    },
+    {
+      "question_id": "F07",
+      "question": "날짜를 다루는 표준 라이브러리 모듈은?",
+      "answerable": true,
+      "relevant_doc_ids": [
+        "D07"
+      ],
+      "expected_answer": "datetime이다."
+    },
+    {
+      "question_id": "F08",
+      "question": "이 조직의 실제 운영 API 키는?",
+      "answerable": false,
+      "relevant_doc_ids": [],
+      "expected_answer": "제공된 문서에서 확인할 수 없다."
+    },
+    {
+      "question_id": "F09",
+      "question": "다음 달 부서별 예산은 얼마인가요?",
+      "answerable": false,
+      "relevant_doc_ids": [],
+      "expected_answer": "제공된 문서에서 확인할 수 없다."
+    },
+    {
+      "question_id": "F10",
+      "question": "어제 실제 서비스의 장애 원인은?",
+      "answerable": false,
+      "relevant_doc_ids": [],
+      "expected_answer": "제공된 문서에서 확인할 수 없다."
+    }
+  ]
+}

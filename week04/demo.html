@@ -1,0 +1,238 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="role→입력 직렬화→교육용 token→준비 응답→형식 확인을 따라가고 실제 JSON 파싱 결과와 관찰 로그를 남긴다."><title>4주차 웹으로 확인하는 LLM 입력·출력 흐름</title><style>:root{color-scheme:light dark;--bg:#fff;--surface:#f4f6f8;--ink:#17202a;--muted:#465464;--line:#697786;--accent:#174ea6;--accent-text:#fff;--error:#a12525;--space:8px;--radius:6px;--body:17px;--small:15px;--h1:32px;--h2:25px;--h3:21px}
+@media(prefers-color-scheme:dark){:root{--bg:#121820;--surface:#1d2733;--ink:#f3f6fa;--muted:#c0cbd8;--line:#8392a5;--accent:#9cc2ff;--accent-text:#121820;--error:#ffb4b4}}
+*{box-sizing:border-box;scrollbar-color:var(--line) var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:var(--body)/1.65 system-ui,"Malgun Gothic",sans-serif;word-break:keep-all;overflow-wrap:anywhere}
+main{max-width:1080px;margin:auto;padding:32px 32px 48px}
+nav{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+a{color:var(--accent);text-underline-offset:.2em;text-decoration-thickness:1px}
+nav a{padding:8px 12px;min-height:44px}
+h1{font-size:var(--h1);line-height:1.3;margin:0 0 24px;font-weight:750}
+h2{font-size:var(--h2);line-height:1.4;margin:48px 0 16px}
+h3{font-size:var(--h3);line-height:1.4;margin:32px 0 12px}
+p{max-width:75ch;margin:12px 0}
+section{margin-top:32px}
+.scope{background:var(--surface);padding:16px 24px;border-radius:var(--radius);margin:24px 0}
+.scope p{margin:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 24px}
+.field{display:grid;gap:8px;align-content:start;min-width:0}
+.wide{grid-column:1/-1}
+label{font-weight:650}
+input,select,textarea,button{font:inherit;line-height:1.5;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);min-height:44px;padding:8px 12px;max-width:100%;caret-color:var(--accent)}
+textarea{width:100%;resize:vertical;min-height:96px}
+button{cursor:pointer;white-space:nowrap}
+button.primary{background:var(--accent);color:var(--accent-text);border-color:var(--accent);font-weight:650}
+button:hover{filter:brightness(.92)}
+button:active{transform:translateY(1px)}
+button:disabled{cursor:default;background:var(--surface);color:var(--muted);filter:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;align-items:center}
+.status{min-height:32px;color:var(--muted);font-weight:600;margin-top:16px}
+.status.error{color:var(--error)}
+pre{font:var(--small)/1.65 ui-monospace,Consolas,monospace;background:var(--surface);padding:16px 24px;white-space:pre-wrap;word-break:break-word;border-radius:var(--radius);margin:16px 0;min-height:56px}
+table{border-collapse:collapse;width:100%;margin-top:16px;font-size:var(--small);font-variant-numeric:tabular-nums;table-layout:auto}
+th,td{text-align:left;vertical-align:top;padding:12px;border-bottom:1px solid var(--line);overflow-wrap:anywhere;max-width:400px}
+th{background:var(--surface);font-weight:700}
+td.number{font-variant-numeric:tabular-nums}
+details{margin-top:24px}
+summary{cursor:pointer;padding:12px 8px;min-height:44px;font-weight:650}
+small,.muted{font-size:var(--small);color:var(--muted)}
+::selection{color:var(--bg);background:var(--ink)}
+.hidden{display:none}
+@media(max-width:800px){.grid{grid-template-columns:1fr}main{padding:24px}h1{font-size:var(--h2)}}
+@media(prefers-reduced-motion:reduce){button:active{transform:none}}
+</style></head><body><main><nav aria-label="실습 이동"><a href="../week04/demo.html">4주 LLM 흐름</a><a href="../week05/demo.html">5주 검색</a><a href="../week06/demo.html">6주 RAG 흐름</a><a href="README.md">실습 가이드</a></nav><h1>4주차 웹으로 확인하는 LLM 입력·출력 흐름</h1><div class="scope"><p><strong>실제 계산:</strong> 문자 분리·출력 자르기·JSON 파싱. <strong>시뮬레이션:</strong> 미리 쓴 응답 재생. 실제 LLM·tokenizer는 실행하지 않습니다.</p></div>
+<form id="run-form" novalidate><div class="grid">
+<div class="field"><label for="question-select">예시 질문</label><select id="question-select"></select></div>
+<div class="field"><label for="budget">출력 예산 (교육용 문자, 1~300)</label><input id="budget" type="number" min="1" max="300" value="80"></div>
+<div class="field wide"><label for="question">질문 (최대 500자)</label><textarea id="question"></textarea></div></div>
+<div class="actions"><button class="primary" type="submit">실행</button><button id="download-result" type="button" disabled>JSON 저장</button></div></form>
+<p id="status" class="status" role="status" aria-live="polite">LQ02와 예산 80으로 시작하세요.</p>
+<section><h2>1. role과 입력 문자열</h2><pre id="messages">실행하면 입력 구성 과정을 표시합니다.</pre></section>
+<section><h2>2. 교육용 token</h2><p>Unicode 문자 하나를 한 단위로 셉니다. 실제 모델의 token 수와 다릅니다.</p><pre id="tokens">문자 분리 결과가 표시됩니다.</pre></section>
+<section><h2>3. 준비 응답과 출력</h2><pre id="output">고정 예시의 응답을 재생합니다.</pre></section>
+<section><h2>4. 실제 JSON 파싱</h2><pre id="parse">문법 성공과 필드 조건을 별도로 확인합니다.</pre></section>
+<details><summary>전체 결과 기록</summary><pre id="record">저장할 결과는 아직 없습니다.</pre></details>
+</main><script>const LAB_DATA={"docs": [{"doc_id": "D01", "title": "자료구조", "text": "list는 순서가 있고 원소를 추가하거나 바꿀 수 있다. append는 한 원소를 끝에 추가한다. set은 중복을 제거하고 교집합과 합집합을 구한다. tuple은 순서가 있는 변경 불가능한 묶음이다. dict는 키로 값을 찾고 키는 hashable이어야 한다.", "reference_url": "https://docs.python.org/ko/3/tutorial/datastructures.html", "source_kind": "author_written_teaching_fixture"}, {"doc_id": "D02", "title": "제어문과 함수", "text": "함수는 def로 정의한다. return은 호출한 곳으로 값을 돌려주고 print는 화면에 출력한다. range는 반복에 사용할 정수 범위를 표현한다. 기본 인자는 정의 시 한 번 평가되므로 mutable 기본 인자를 공유하는 상황을 주의한다.", "reference_url": "https://docs.python.org/ko/3/tutorial/controlflow.html", "source_kind": "author_written_teaching_fixture"}, {"doc_id": "D03", "title": "모듈", "text": "모듈은 정의와 문장을 담는 Python 파일이다. import는 모듈을 불러온다. __name__이 __main__이면 파일을 직접 실행한 것이다. 같은 이름의 파일을 만들면 의도한 모듈을 가리는 이름 충돌이 생길 수 있다.", "reference_url": "https://docs.python.org/ko/3/tutorial/modules.html", "source_kind": "author_written_teaching_fixture"}, {"doc_id": "D04", "title": "입력과 출력", "text": "텍스트 파일을 open할 때 encoding을 지정할 수 있다. with 문은 파일 사용이 끝나면 닫는 자원 관리를 돕는다. json.dump는 JSON을 파일에 쓰고 json.load는 JSON 파일을 읽는다. 읽기 모드 r과 쓰기 모드 w를 구분한다.", "reference_url": "https://docs.python.org/ko/3/tutorial/inputoutput.html", "source_kind": "author_written_teaching_fixture"}, {"doc_id": "D05", "title": "오류와 예외", "text": "try 블록에서 발생한 예외 중 지정한 종류를 except에서 처리한다. 파일이 없으면 FileNotFoundError가 발생할 수 있다. finally는 예외 발생 여부와 관계없이 블록 종료 때 실행된다. raise는 예외를 발생시키거나 다시 전파한다.", "reference_url": "https://docs.python.org/ko/3/tutorial/errors.html", "source_kind": "author_written_teaching_fixture"}, {"doc_id": "D06", "title": "클래스", "text": "클래스는 속성과 메서드를 묶고 인스턴스는 클래스로 만든 객체다. 인스턴스 메서드의 self는 호출한 인스턴스를 가리킨다. 상속은 기존 클래스의 동작을 확장할 때 사용한다. 인스턴스 변수와 클래스 변수의 공유 범위를 구분한다.", "reference_url": "https://docs.python.org/ko/3/tutorial/classes.html", "source_kind": "author_written_teaching_fixture"}, {"doc_id": "D07", "title": "표준 라이브러리", "text": "Python 표준 라이브러리는 파일 경로 처리 pathlib, 날짜 datetime, 로그 logging 등의 모듈을 제공한다. 운영체제 경로 문자열을 직접 이어붙이기보다 경로 객체로 다룰 수 있다. random은 암호학적 비밀 값 생성용으로 사용하지 않는다.", "reference_url": "https://docs.python.org/ko/3/tutorial/stdlib.html", "source_kind": "author_written_teaching_fixture"}, {"doc_id": "D08", "title": "가상환경", "text": "프로젝트별 가상환경은 서로 다른 패키지 버전과 의존성을 분리한다. 활성화한 셸과 편집기가 같은 Python을 사용하는지 확인한다. 가상환경 폴더를 Git에 넣는 대신 사용한 라이브러리 이름과 버전을 기록한다.", "reference_url": "https://docs.python.org/ko/3/tutorial/venv.html", "source_kind": "author_written_teaching_fixture"}], "dev": [{"question_id": "Q01", "question": "목록 끝에 원소 하나를 추가하는 방법은?", "answerable": true, "relevant_doc_ids": ["D01"], "expected_answer": "list의 append를 사용한다."}, {"question_id": "Q02", "question": "중복을 없애고 교집합을 구할 때 쓸 자료구조는?", "answerable": true, "relevant_doc_ids": ["D01"], "expected_answer": "set을 사용한다."}, {"question_id": "Q03", "question": "dict 키가 되려면 어떤 조건을 만족해야 하나요?", "answerable": true, "relevant_doc_ids": ["D01"], "expected_answer": "hashable이어야 한다."}, {"question_id": "Q04", "question": "return과 print는 무엇이 다른가요?", "answerable": true, "relevant_doc_ids": ["D02"], "expected_answer": "return은 호출자에게 값을 돌려주고 print는 화면에 출력한다."}, {"question_id": "Q05", "question": "변경 가능한 기본 인자를 사용할 때 주의할 점은?", "answerable": true, "relevant_doc_ids": ["D02"], "expected_answer": "기본 인자가 정의 시 한 번 평가되어 호출 간에 객체가 공유될 수 있다."}, {"question_id": "Q06", "question": "Python 모듈을 불러오는 문장은?", "answerable": true, "relevant_doc_ids": ["D03"], "expected_answer": "import를 사용한다."}, {"question_id": "Q07", "question": "파일을 직접 실행했는지는 어떤 이름으로 구분하나요?", "answerable": true, "relevant_doc_ids": ["D03"], "expected_answer": "__name__이 __main__인지 확인한다."}, {"question_id": "Q08", "question": "파일을 사용한 뒤 자동으로 닫도록 돕는 구문은?", "answerable": true, "relevant_doc_ids": ["D04"], "expected_answer": "with 문을 사용한다."}, {"question_id": "Q09", "question": "JSON 파일을 읽는 함수와 쓰는 함수는?", "answerable": true, "relevant_doc_ids": ["D04"], "expected_answer": "json.load로 읽고 json.dump로 쓴다."}, {"question_id": "Q10", "question": "파일이 없을 때 발생할 수 있는 예외는?", "answerable": true, "relevant_doc_ids": ["D05"], "expected_answer": "FileNotFoundError다."}, {"question_id": "Q11", "question": "예외 여부와 관계없이 블록 종료 시 실행하는 부분은?", "answerable": true, "relevant_doc_ids": ["D05"], "expected_answer": "finally 블록이다."}, {"question_id": "Q12", "question": "인스턴스 메서드의 self는 무엇인가요?", "answerable": true, "relevant_doc_ids": ["D06"], "expected_answer": "메서드를 호출한 인스턴스를 가리킨다."}, {"question_id": "Q13", "question": "클래스와 인스턴스의 관계는?", "answerable": true, "relevant_doc_ids": ["D06"], "expected_answer": "인스턴스는 클래스로 만든 객체다."}, {"question_id": "Q14", "question": "파일 경로를 처리하는 표준 라이브러리 모듈은?", "answerable": true, "relevant_doc_ids": ["D07"], "expected_answer": "pathlib이다."}, {"question_id": "Q15", "question": "프로젝트마다 패키지 버전을 분리하는 방법은?", "answerable": true, "relevant_doc_ids": ["D08"], "expected_answer": "프로젝트별 가상환경을 사용한다."}, {"question_id": "Q16", "question": "이 회사의 내년 연봉 인상률은?", "answerable": false, "relevant_doc_ids": [], "expected_answer": "제공된 문서에서 확인할 수 없다."}, {"question_id": "Q17", "question": "다음 주 서울의 정확한 날씨는?", "answerable": false, "relevant_doc_ids": [], "expected_answer": "제공된 문서에서 확인할 수 없다."}, {"question_id": "Q18", "question": "내 개인 계정의 비밀번호는?", "answerable": false, "relevant_doc_ids": [], "expected_answer": "제공된 문서에서 확인할 수 없다."}, {"question_id": "Q19", "question": "현재 사내 GPU 서버의 남은 메모리는?", "answerable": false, "relevant_doc_ids": [], "expected_answer": "제공된 문서에서 확인할 수 없다."}, {"question_id": "Q20", "question": "내일 특정 주식의 종가는?", "answerable": false, "relevant_doc_ids": [], "expected_answer": "제공된 문서에서 확인할 수 없다."}], "final": [{"question_id": "F01", "question": "tuple의 순서와 변경 가능성을 설명하세요.", "answerable": true, "relevant_doc_ids": ["D01"], "expected_answer": "순서가 있는 변경 불가능한 묶음이다."}, {"question_id": "F02", "question": "함수를 정의하는 키워드는 무엇인가요?", "answerable": true, "relevant_doc_ids": ["D02"], "expected_answer": "def다."}, {"question_id": "F03", "question": "모듈 이름과 같은 파일명을 만들 때 어떤 문제가 있나요?", "answerable": true, "relevant_doc_ids": ["D03"], "expected_answer": "의도한 모듈을 가리는 이름 충돌이 생길 수 있다."}, {"question_id": "F04", "question": "텍스트 파일을 열 때 문자 인코딩은 어디에 지정하나요?", "answerable": true, "relevant_doc_ids": ["D04"], "expected_answer": "open의 encoding에 지정한다."}, {"question_id": "F05", "question": "예외를 직접 발생시키거나 전파하는 키워드는?", "answerable": true, "relevant_doc_ids": ["D05"], "expected_answer": "raise다."}, {"question_id": "F06", "question": "기존 클래스의 동작을 확장하는 관계는?", "answerable": true, "relevant_doc_ids": ["D06"], "expected_answer": "상속이다."}, {"question_id": "F07", "question": "날짜를 다루는 표준 라이브러리 모듈은?", "answerable": true, "relevant_doc_ids": ["D07"], "expected_answer": "datetime이다."}, {"question_id": "F08", "question": "이 조직의 실제 운영 API 키는?", "answerable": false, "relevant_doc_ids": [], "expected_answer": "제공된 문서에서 확인할 수 없다."}, {"question_id": "F09", "question": "다음 달 부서별 예산은 얼마인가요?", "answerable": false, "relevant_doc_ids": [], "expected_answer": "제공된 문서에서 확인할 수 없다."}, {"question_id": "F10", "question": "어제 실제 서비스의 장애 원인은?", "answerable": false, "relevant_doc_ids": [], "expected_answer": "제공된 문서에서 확인할 수 없다."}], "llm": [{"question_id": "LQ01", "question": "다음 문장을 요약하세요: 고양이가 창가에서 햇볕을 쬐며 잤다.", "reference_answer": "고양이가 창가에서 잤다.", "expected_behavior": "핵심 의미를 유지한 짧은 요약"}, {"question_id": "LQ02", "question": "숫자 3과 5의 합을 answer 키의 JSON으로 답하세요.", "reference_answer": "{\"answer\": 8}", "expected_behavior": "JSON 파싱 및 answer=8"}, {"question_id": "LQ03", "question": "사과와 바나나를 items 키의 JSON 배열로 답하세요.", "reference_answer": "{\"items\": [\"사과\", \"바나나\"]}", "expected_behavior": "배열 필드와 두 항목"}, {"question_id": "LQ04", "question": "Python list와 tuple의 차이를 한 문장으로 답하세요.", "reference_answer": "list는 변경 가능하고 tuple 자체는 변경 불가능하다.", "expected_behavior": "변경 가능성의 차이"}, {"question_id": "LQ05", "question": "hello를 한국어로 번역하세요.", "reference_answer": "안녕하세요.", "expected_behavior": "의미가 같은 번역"}, {"question_id": "LQ06", "question": "빨강, 파랑을 두 개의 목록 항목으로 답하세요.", "reference_answer": "- 빨강\n- 파랑", "expected_behavior": "두 항목의 목록"}, {"question_id": "LQ07", "question": "제공된 정보 없이 오늘 우리 회사 점심 메뉴를 알려주세요.", "reference_answer": "주어진 정보만으로는 확인할 수 없습니다.", "expected_behavior": "모르는 정보를 지어내지 않음"}, {"question_id": "LQ08", "question": "입력 문자열 abc의 글자 수를 답하세요.", "reference_answer": "3", "expected_behavior": "정수 3"}, {"question_id": "LQ09", "question": "아래 잘못된 형식 예시를 JSON 파서가 받는지 확인하세요.", "reference_answer": "{\"answer\": 8,}", "expected_behavior": "파싱 실패를 검출하는 수작업 오류 예시"}, {"question_id": "LQ10", "question": "근거 문서가 없으면 문서 출처를 붙일 수 있나요?", "reference_answer": "확인하지 않은 문서 출처를 만들면 안 됩니다.", "expected_behavior": "출처의 확인 필요성을 설명"}]};</script><script>/* Small, deterministic teaching calculations; no neural model is loaded. */
+(() => {
+  "use strict";
+  class LabInputError extends Error { constructor(message) { super(message); this.name = "LabInputError"; } }
+  const chars = (text) => Array.from(text);
+  const length = (text) => chars(text).length;
+  const slice = (text, start, end) => chars(text).slice(start, end).join("");
+  const normalize = (values) => {
+    const norm = Math.hypot(...Object.values(values));
+    return Object.fromEntries(Object.entries(values).map(([key, value]) => [key, norm ? value / norm : 0]));
+  };
+  const grams = (text) => {
+    const source = chars(text.toLowerCase().replace(/\s\s+/g, " "));
+    const counts = Object.create(null);
+    for (let n = 2; n <= 4; n += 1) for (let i = 0; i + n <= source.length; i += 1) {
+      const term = source.slice(i, i + n).join("");
+      counts[term] = (counts[term] || 0) + 1;
+    }
+    return counts;
+  };
+  const dot = (left, right) => Object.entries(left).reduce((sum, [key, value]) => sum + value * (right[key] || 0), 0);
+  const groups = Object.freeze([
+    ["list", "append", "set", "tuple", "dict", "자료구조", "목록", "원소", "중복", "키"],
+    ["def", "return", "print", "함수", "모듈", "import", "파일", "json", "예외", "오류", "raise"],
+    ["클래스", "인스턴스", "self", "상속", "경로", "pathlib", "환경", "패키지", "venv"],
+  ]);
+  const toyVector = (text) => normalize(Object.fromEntries(groups.map((words, index) => [String(index), words.reduce((sum, word) => sum + text.toLowerCase().split(word).length - 1, 0)])));
+  const fingerprint = (docs) => {
+    let value = 2166136261;
+    for (const character of JSON.stringify(docs)) value = Math.imul(value ^ character.codePointAt(0), 16777619) >>> 0;
+    return `fnv1a32-${value.toString(16).padStart(8, "0")}`;
+  };
+  function chunksOf(docs, config) {
+    if (!Number.isInteger(config.size) || config.size < 1 || !Number.isInteger(config.overlap) || config.overlap < 0 || config.overlap >= config.size) throw new LabInputError("overlap은 0 이상이고 chunk 크기보다 작아야 합니다.");
+    const chunks = [];
+    for (const doc of docs) {
+      let part = 1;
+      for (let start = 0; start < length(doc.text); start += config.size - config.overlap) {
+        const end = Math.min(start + config.size, length(doc.text));
+        chunks.push({ chunk_id: `${doc.doc_id}-C${String(part).padStart(3, "0")}`, doc_id: doc.doc_id, start, end, text: slice(doc.text, start, end) });
+        part += 1;
+        if (end === length(doc.text)) break;
+      }
+    }
+    if (chunks.length === 0) throw new LabInputError("문서가 비어 있습니다. 본문을 추가하세요.");
+    return chunks;
+  }
+  function makeIndex(docs, config) {
+    const chunks = chunksOf(docs, config);
+    const counts = chunks.map((chunk) => grams(chunk.text));
+    const df = Object.create(null);
+    counts.forEach((terms) => Object.keys(terms).forEach((term) => { df[term] = (df[term] || 0) + 1; }));
+    const idf = Object.fromEntries(Object.entries(df).map(([term, count]) => [term, Math.log((1 + chunks.length) / (1 + count)) + 1]));
+    const tfidf = counts.map((terms) => normalize(Object.fromEntries(Object.entries(terms).map(([term, count]) => [term, count * idf[term]]))));
+    return { schema: "teaching-index-v2", backend: "browser-memory-and-json-not-chroma", fingerprint: fingerprint(docs), config: { ...config }, chunks, idf, tfidf, vectors: chunks.map((chunk) => toyVector(chunk.text)), neural_model_executed: false };
+  }
+  function search(index, question, method = "tfidf") {
+    if (!question.trim()) throw new LabInputError("질문이 비어 있습니다. 질문을 입력하세요.");
+    if (length(question) > 500) throw new LabInputError("입력은 500자 이하로 줄여주세요. 이 제한은 데모의 문자 제한입니다.");
+    const raw = grams(question);
+    const query = method === "vector" ? toyVector(question) : normalize(Object.fromEntries(Object.entries(raw).filter(([term]) => Object.hasOwn(index.idf, term)).map(([term, count]) => [term, count * index.idf[term]])));
+    return index.chunks.map((chunk, ordinal) => ({ ...chunk, score: dot(query, method === "vector" ? index.vectors[ordinal] : index.tfidf[ordinal]), ordinal })).sort((a, b) => b.score - a.score || a.ordinal - b.ordinal).slice(0, 3).map((row, rank) => ({ ...row, rank: rank + 1 }));
+  }
+  function recall(top, relevant) {
+    if (relevant.length === 0) return null;
+    const found = new Set(top.map((row) => row.doc_id));
+    return relevant.filter((id) => found.has(id)).length / relevant.length;
+  }
+  function llm(question, fixture, budget) {
+    if (!question.trim()) throw new LabInputError("질문이 비어 있습니다. 질문을 입력하세요.");
+    if (length(question) > 500) throw new LabInputError("입력은 500자 이하로 줄여주세요.");
+    if (!Number.isInteger(budget) || budget < 1 || budget > 300) throw new LabInputError("출력 예산은 1~300의 정수로 입력하세요.");
+    const messages = [{ role: "system", content: "간결하게 답하세요." }, { role: "user", content: question }];
+    const serialized = messages.map((message) => `${message.role}: ${message.content}`).join("\n");
+    const prepared = fixture ? fixture.reference_answer : "이 입력에 준비된 응답은 없습니다. 고정 예시 질문을 선택하세요.";
+    const output = slice(prepared, 0, budget);
+    let parse;
+    try { const value = JSON.parse(output); parse = { syntax_success: true, answer_is_number: typeof value?.answer === "number", items_is_array: Array.isArray(value?.items), error: null }; }
+    catch (error) { if (!(error instanceof SyntaxError)) throw error; parse = { syntax_success: false, answer_is_number: false, items_is_array: false, error: error.message }; }
+    return { provenance: "prepared_response_replay_with_real_string_and_json_operations", model_executed: false, toy_tokenizer: true, messages, serialized, toy_tokens: chars(serialized), toy_token_count: length(serialized), budget, prepared_response: prepared, output, output_character_count: length(output), parse, model_input_tokens: null, model_generation_seconds: null };
+  }
+  function rag(index, question, options) {
+    if (!Number.isInteger(options.limit) || options.limit < 1 || options.limit > 2000 || !Number.isFinite(options.threshold) || options.threshold < 0 || options.threshold > 1) throw new LabInputError("context 문자 예산과 임계값 범위를 확인하세요.");
+    const top = search(index, question, options.method);
+    const context = [];
+    let remaining = options.limit;
+    for (const row of top) {
+      if (remaining <= 0) break;
+      const text = slice(row.text, 0, remaining);
+      context.push({ chunk_id: row.chunk_id, doc_id: row.doc_id, text });
+      remaining -= length(text);
+    }
+    const refused = top[0].score <= 0 || top[0].score < options.threshold || context.length === 0;
+    const chosen = context[0];
+    return { provenance: "executed_retrieval_and_sentence_quotation_rule_not_llm", model_executed: false, chroma_executed: false, question, method: options.method, top3: top, context, context_characters: options.limit - remaining, options: { ...options }, response: refused ? "제공된 문서에서 답변 근거를 확인할 수 없습니다." : `문서 인용: ${chosen.text}`, cited_chunk_ids: refused ? [] : [chosen.chunk_id], refused, citation_id_in_context: !refused && context.some((row) => row.chunk_id === chosen.chunk_id), semantic_citation_supported: null, answer_correct: null, model_generation_seconds: null };
+  }
+  function restore(text, docs, config) {
+    let parsed;
+    try { parsed = JSON.parse(text); } catch (error) { if (!(error instanceof SyntaxError)) throw error; throw new LabInputError("JSON 문법을 읽을 수 없습니다. 정상 인덱스 파일을 선택하세요."); }
+    if (parsed?.schema !== "teaching-index-v2" || parsed.fingerprint !== fingerprint(docs) || parsed.config?.size !== config.size || parsed.config?.overlap !== config.overlap) throw new LabInputError("문서 또는 청킹 설정이 다른 인덱스입니다. 기준 설정으로 복구하거나 다시 생성하세요.");
+    const expected = makeIndex(docs, config);
+    if (JSON.stringify(parsed) !== JSON.stringify(expected)) throw new LabInputError("인덱스 내용과 계산 규칙이 맞지 않습니다. 새로 생성한 파일을 사용하세요.");
+    return parsed;
+  }
+  function evaluate(index, development, finalQuestions, options) {
+    const rows = [];
+    for (const [split, questions] of [["development", development], ["final_public_demo", finalQuestions]]) for (const question of questions) for (const method of ["prepared", "tfidf", "vector"]) {
+      const actual = method === "prepared" ? null : rag(index, question.question, { ...options, method });
+      rows.push({ split, question_id: question.question_id, method, provenance: method === "prepared" ? "author_written_replay_not_model_output" : "computed_search_and_quotation_rule", answerable: question.answerable, relevant_doc_ids: question.relevant_doc_ids, retrieved_doc_ids: actual ? actual.top3.map((row) => row.doc_id) : [], recall_at3: actual ? recall(actual.top3, question.relevant_doc_ids) : null, response: actual ? actual.response : question.expected_answer, refused: actual ? actual.refused : !question.answerable, citation_id_in_context: actual ? actual.citation_id_in_context : null, refusal_correct_unanswerable: question.answerable ? null : (actual ? actual.refused : true), answer_correct: null, semantic_citation_supported: null, model_executed: false, model_generation_seconds: null });
+    }
+    const summary = [];
+    for (const split of ["development", "final_public_demo"]) for (const method of ["prepared", "tfidf", "vector"]) {
+      const selected = rows.filter((row) => row.split === split && row.method === method);
+      const recalls = selected.filter((row) => row.recall_at3 !== null);
+      const unknown = selected.filter((row) => !row.answerable);
+      summary.push({ split, method, questions: selected.length, answerable_denominator: selected.length - unknown.length, unanswerable_denominator: unknown.length, recall_at3: recalls.length ? recalls.reduce((sum, row) => sum + row.recall_at3, 0) / recalls.length : null, refused_unanswerable: unknown.filter((row) => row.refusal_correct_unanswerable).length, answer_correct: null, semantic_citation_supported: null, independent_holdout: false });
+    }
+    return { rows, summary, neural_model_executed: false, independent_holdout: false };
+  }
+  globalThis.LabCore = Object.freeze({ LabInputError, chars, length, slice, groups, grams, toyVector, makeIndex, chunksOf, fingerprint, search, recall, llm, rag, restore, evaluate });
+})();
+</script><script>/* Shared DOM operations keep arbitrary input as text, never HTML. */
+(() => {
+  "use strict";
+  const get = (id) => {
+    const element = document.getElementById(id);
+    if (!element) throw new LabCore.LabInputError(`화면 요소를 찾을 수 없습니다: ${id}`);
+    return element;
+  };
+  const show = (id, value) => { get(id).textContent = typeof value === "string" ? value : JSON.stringify(value, null, 2); };
+  const status = (message, error = false) => { const element = get("status"); element.textContent = message; element.classList.toggle("error", error); };
+  const guard = (action) => {
+    try { return action(); } catch (error) {
+      if (!(error instanceof LabCore.LabInputError)) throw error;
+      status(error.message, true); return null;
+    }
+  };
+  const table = (id, columns, rows) => {
+    const tableElement = get(id); tableElement.replaceChildren();
+    const head = document.createElement("thead"), body = document.createElement("tbody"), header = document.createElement("tr");
+    for (const [, label] of columns) { const cell = document.createElement("th"); cell.scope = "col"; cell.textContent = label; header.append(cell); }
+    head.append(header);
+    for (const row of rows) {
+      const tr = document.createElement("tr");
+      for (const [key] of columns) { const td = document.createElement("td"); const value = row[key]; td.textContent = value === null ? "미측정 / 해당 없음" : Array.isArray(value) ? value.join(", ") : String(value); tr.append(td); }
+      body.append(tr);
+    }
+    tableElement.append(head, body);
+  };
+  const download = (name, value) => {
+    const blob = new Blob([JSON.stringify(value, null, 2)], { type: "application/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob), anchor = document.createElement("a");
+    anchor.href = url; anchor.download = name; anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  const populate = (id, rows, key, label) => rows.forEach((row) => { const option = document.createElement("option"); option.value = row[key]; option.textContent = row[label]; get(id).append(option); });
+  globalThis.LabUI = Object.freeze({ get, show, status, guard, table, download, populate });
+})();
+</script><script>(() => {
+  "use strict";
+  const U = LabUI, C = LabCore;
+  let last = null;
+  U.populate("question-select", LAB_DATA.llm, "question_id", "question_id");
+  U.get("question-select").value = "LQ02";
+  const selectQuestion = () => { U.get("question").value = LAB_DATA.llm.find((row) => row.question_id === U.get("question-select").value).question; };
+  U.get("question-select").addEventListener("change", selectQuestion);
+  selectQuestion();
+  U.get("run-form").addEventListener("submit", (event) => {
+    event.preventDefault(); last = null; U.get("download-result").disabled = true;
+    ["messages", "tokens", "output", "parse"].forEach((id) => U.show(id, "실행 결과 없음"));
+    U.guard(() => {
+      const question = U.get("question").value;
+      last = C.llm(question, LAB_DATA.llm.find((row) => row.question === question), Number(U.get("budget").value));
+      U.show("messages", last.serialized);
+      U.show("tokens", { toy_token_count: last.toy_token_count, unit: "Unicode 문자, 실제 모델 token 아님", tokens: last.toy_tokens });
+      U.show("output", last.output);
+      U.show("parse", last.parse);
+      U.show("record", last);
+      U.status(`준비 응답 재생 완료. 출력 ${last.output_character_count}자. JSON 문법 ${last.parse.syntax_success ? "성공" : "실패"}.`);
+      U.get("download-result").disabled = false;
+    });
+  });
+  U.get("download-result").addEventListener("click", () => { if (last) U.download("llm_demo.json", last); });
+})();
+</script></body></html>

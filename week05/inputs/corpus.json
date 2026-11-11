@@ -1,0 +1,58 @@
+[
+  {
+    "doc_id": "D01",
+    "title": "자료구조",
+    "text": "list는 순서가 있고 원소를 추가하거나 바꿀 수 있다. append는 한 원소를 끝에 추가한다. set은 중복을 제거하고 교집합과 합집합을 구한다. tuple은 순서가 있는 변경 불가능한 묶음이다. dict는 키로 값을 찾고 키는 hashable이어야 한다.",
+    "reference_url": "https://docs.python.org/ko/3/tutorial/datastructures.html",
+    "source_kind": "author_written_teaching_fixture"
+  },
+  {
+    "doc_id": "D02",
+    "title": "제어문과 함수",
+    "text": "함수는 def로 정의한다. return은 호출한 곳으로 값을 돌려주고 print는 화면에 출력한다. range는 반복에 사용할 정수 범위를 표현한다. 기본 인자는 정의 시 한 번 평가되므로 mutable 기본 인자를 공유하는 상황을 주의한다.",
+    "reference_url": "https://docs.python.org/ko/3/tutorial/controlflow.html",
+    "source_kind": "author_written_teaching_fixture"
+  },
+  {
+    "doc_id": "D03",
+    "title": "모듈",
+    "text": "모듈은 정의와 문장을 담는 Python 파일이다. import는 모듈을 불러온다. __name__이 __main__이면 파일을 직접 실행한 것이다. 같은 이름의 파일을 만들면 의도한 모듈을 가리는 이름 충돌이 생길 수 있다.",
+    "reference_url": "https://docs.python.org/ko/3/tutorial/modules.html",
+    "source_kind": "author_written_teaching_fixture"
+  },
+  {
+    "doc_id": "D04",
+    "title": "입력과 출력",
+    "text": "텍스트 파일을 open할 때 encoding을 지정할 수 있다. with 문은 파일 사용이 끝나면 닫는 자원 관리를 돕는다. json.dump는 JSON을 파일에 쓰고 json.load는 JSON 파일을 읽는다. 읽기 모드 r과 쓰기 모드 w를 구분한다.",
+    "reference_url": "https://docs.python.org/ko/3/tutorial/inputoutput.html",
+    "source_kind": "author_written_teaching_fixture"
+  },
+  {
+    "doc_id": "D05",
+    "title": "오류와 예외",
+    "text": "try 블록에서 발생한 예외 중 지정한 종류를 except에서 처리한다. 파일이 없으면 FileNotFoundError가 발생할 수 있다. finally는 예외 발생 여부와 관계없이 블록 종료 때 실행된다. raise는 예외를 발생시키거나 다시 전파한다.",
+    "reference_url": "https://docs.python.org/ko/3/tutorial/errors.html",
+    "source_kind": "author_written_teaching_fixture"
+  },
+  {
+    "doc_id": "D06",
+    "title": "클래스",
+    "text": "클래스는 속성과 메서드를 묶고 인스턴스는 클래스로 만든 객체다. 인스턴스 메서드의 self는 호출한 인스턴스를 가리킨다. 상속은 기존 클래스의 동작을 확장할 때 사용한다. 인스턴스 변수와 클래스 변수의 공유 범위를 구분한다.",
+    "reference_url": "https://docs.python.org/ko/3/tutorial/classes.html",
+    "source_kind": "author_written_teaching_fixture"
+  },
+  {
+    "doc_id": "D07",
+    "title": "표준 라이브러리",
+    "text": "Python 표준 라이브러리는 파일 경로 처리 pathlib, 날짜 datetime, 로그 logging 등의 모듈을 제공한다. 운영체제 경로 문자열을 직접 이어붙이기보다 경로 객체로 다룰 수 있다. random은 암호학적 비밀 값 생성용으로 사용하지 않는다.",
+    "reference_url": "https://docs.python.org/ko/3/tutorial/stdlib.html",
+    "source_kind": "author_written_teaching_fixture"
+  },
+  {
+    "doc_id": "D08",
+    "title": "가상환경",
+    "text": "프로젝트별 가상환경은 서로 다른 패키지 버전과 의존성을 분리한다. 활성화한 셸과 편집기가 같은 Python을 사용하는지 확인한다. 가상환경 폴더를 Git에 넣는 대신 사용한 라이브러리 이름과 버전을 기록한다.",
+    "reference_url": "https://docs.python.org/ko/3/tutorial/venv.html",
+    "source_kind": "author_written_teaching_fixture"
+  }
+]

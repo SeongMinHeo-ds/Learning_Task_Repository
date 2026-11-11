@@ -1,0 +1,62 @@
+[
+  {
+    "question_id": "LQ01",
+    "question": "다음 문장을 요약하세요: 고양이가 창가에서 햇볕을 쬐며 잤다.",
+    "reference_answer": "고양이가 창가에서 잤다.",
+    "expected_behavior": "핵심 의미를 유지한 짧은 요약"
+  },
+  {
+    "question_id": "LQ02",
+    "question": "숫자 3과 5의 합을 answer 키의 JSON으로 답하세요.",
+    "reference_answer": "{\"answer\": 8}",
+    "expected_behavior": "JSON 파싱 및 answer=8"
+  },
+  {
+    "question_id": "LQ03",
+    "question": "사과와 바나나를 items 키의 JSON 배열로 답하세요.",
+    "reference_answer": "{\"items\": [\"사과\", \"바나나\"]}",
+    "expected_behavior": "배열 필드와 두 항목"
+  },
+  {
+    "question_id": "LQ04",
+    "question": "Python list와 tuple의 차이를 한 문장으로 답하세요.",
+    "reference_answer": "list는 변경 가능하고 tuple 자체는 변경 불가능하다.",
+    "expected_behavior": "변경 가능성의 차이"
+  },
+  {
+    "question_id": "LQ05",
+    "question": "hello를 한국어로 번역하세요.",
+    "reference_answer": "안녕하세요.",
+    "expected_behavior": "의미가 같은 번역"
+  },
+  {
+    "question_id": "LQ06",
+    "question": "빨강, 파랑을 두 개의 목록 항목으로 답하세요.",
+    "reference_answer": "- 빨강\n- 파랑",
+    "expected_behavior": "두 항목의 목록"
+  },
+  {
+    "question_id": "LQ07",
+    "question": "제공된 정보 없이 오늘 우리 회사 점심 메뉴를 알려주세요.",
+    "reference_answer": "주어진 정보만으로는 확인할 수 없습니다.",
+    "expected_behavior": "모르는 정보를 지어내지 않음"
+  },
+  {
+    "question_id": "LQ08",
+    "question": "입력 문자열 abc의 글자 수를 답하세요.",
+    "reference_answer": "3",
+    "expected_behavior": "정수 3"
+  },
+  {
+    "question_id": "LQ09",
+    "question": "아래 잘못된 형식 예시를 JSON 파서가 받는지 확인하세요.",
+    "reference_answer": "{\"answer\": 8,}",
+    "expected_behavior": "파싱 실패를 검출하는 수작업 오류 예시"
+  },
+  {
+    "question_id": "LQ10",
+    "question": "근거 문서가 없으면 문서 출처를 붙일 수 있나요?",
+    "reference_answer": "확인하지 않은 문서 출처를 만들면 안 됩니다.",
+    "expected_behavior": "출처의 확인 필요성을 설명"
+  }
+]

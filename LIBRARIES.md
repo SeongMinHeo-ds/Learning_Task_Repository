@@ -1,52 +1,38 @@
-# 주차별 라이브러리 이름
+# 라이브러리 이름
 
-## 1주차
-
-- numpy
-- pandas
-
-## 2주차
+## 1주
 
 - numpy
 - pandas
 - scikit-learn
-- matplotlib
-- joblib
 
-## 3주차
+## 2주
 
 - numpy
+- pandas
+- scikit-learn
+- joblib
+
+## 3주
+
+- numpy
+- pandas
 - torch
 - torchvision
 - matplotlib
+- scikit-learn
 
-## 4주차
+## 4주
 
-- torch
-- transformers
-- accelerate
-- safetensors
+PC 웹은 설치 없음. Python 직접 계산은 표준 라이브러리 json·csv 사용.
 
-## 5주차
+## 5주
+
+PC 웹은 설치 없음. Python 직접 계산:
 
 - numpy
-- pandas
 - scikit-learn
-- sentence-transformers
-- torch
-- requests
-- beautifulsoup4
 
-## 6주차
+## 6주
 
-- numpy
-- pandas
-- scikit-learn
-- torch
-- transformers
-- accelerate
-- safetensors
-- sentence-transformers
-- chromadb
-- requests
-- beautifulsoup4
+PC 웹은 설치 없음. Python 집계는 표준 라이브러리 json·csv 사용. pandas를 사용해도 됩니다.
