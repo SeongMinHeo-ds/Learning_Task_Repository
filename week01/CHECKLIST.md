@@ -36,11 +36,13 @@
 
 ## L04 NumPy 결과를 손계산과 대조
 
-- [ ] numpy_results.json: 원소 수는 6으로 유지된다. mask 결과의 순서도 기록한다.
-- [ ] 연산별 입력·shape·결과 표: 축별 합 [5,7,9]와 [6,15], 전체 합 21을 대조하고 원소별 곱과 행렬곱의 출력 shape를 구분한다.
-- [ ] numpy_notes.md: view가 원본을 공유하는 경우와 독립 copy를 실제 값으로 설명한다.
+- [x] numpy_results.json: 원소 수는 6으로 유지된다. mask 결과의 순서도 기록한다.
+- [x] 연산별 입력·shape·결과 표: 축별 합 [5,7,9]와 [6,15], 전체 합 21을 대조하고 원소별 곱과 행렬곱의 출력 shape를 구분한다.
+- [x] numpy_notes.md: view가 원본을 공유하는 경우와 독립 copy를 실제 값으로 설명한다.
 
 증빙 경로·링크:
+- 실행 코드: week01/L04_numpy_practice.py
+- 산출물: week01/numpy_results.json, week01/numpy_notes.md
 
 ## L05 Wine 필터·집계·결과 검증
 

@@ -1,0 +1,155 @@
+{
+  "array_A": {
+    "shape": [
+      2,
+      3
+    ],
+    "dtype": "int32",
+    "total_elements": 6,
+    "indexing": {
+      "A[0, 1]": 2,
+      "row_1": [
+        4,
+        5,
+        6
+      ],
+      "col_2": [
+        3,
+        6
+      ]
+    },
+    "mask_gt_3": {
+      "mask_order": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        true
+      ],
+      "selected_values": [
+        4,
+        5,
+        6
+      ]
+    },
+    "reshape_3x2": [
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        5,
+        6
+      ]
+    ]
+  },
+  "operations": {
+    "sum_axis0": [
+      5,
+      7,
+      9
+    ],
+    "sum_axis1": [
+      6,
+      15
+    ],
+    "mean_axis0": [
+      2.5,
+      3.5,
+      4.5
+    ],
+    "mean_axis1": [
+      2.0,
+      5.0
+    ],
+    "total_sum": 21,
+    "broadcasting_A_plus_b": {
+      "input_b": [
+        10,
+        20,
+        30
+      ],
+      "output_shape": [
+        2,
+        3
+      ],
+      "result": [
+        [
+          11,
+          22,
+          33
+        ],
+        [
+          14,
+          25,
+          36
+        ]
+      ]
+    },
+    "elementwise_multiplication_A_x_A": {
+      "output_shape": [
+        2,
+        3
+      ],
+      "result": [
+        [
+          1,
+          4,
+          9
+        ],
+        [
+          16,
+          25,
+          36
+        ]
+      ]
+    },
+    "matrix_multiplication_A_matmul_A_T": {
+      "output_shape": [
+        2,
+        2
+      ],
+      "result": [
+        [
+          14,
+          32
+        ],
+        [
+          32,
+          77
+        ]
+      ]
+    }
+  },
+  "view_vs_copy": {
+    "original_after_slice_view_mutation": [
+      [
+        99,
+        2,
+        3
+      ],
+      [
+        4,
+        5,
+        6
+      ]
+    ],
+    "original_after_copy_mutation": [
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        4,
+        5,
+        6
+      ]
+    ]
+  }
+}
