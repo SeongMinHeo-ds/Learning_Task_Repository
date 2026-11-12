@@ -46,8 +46,11 @@
 
 ## L05 Wine 필터·집계·결과 검증
 
-- [ ] 데이터 출처와 기본 점검 기록: 178행·13 feature인지 확인한다. 결측이 없어도 열별 0개를 기록한다.
-- [ ] wine_summary.json, wine_filtered.csv, wine_group_summary.csv: 13.0 조건은 92행이다. 모든 결과 행의 alcohol이 조건을 만족하고 row_id가 원본과 대응해야 한다.
-- [ ] validation_results.csv와 실행 README: 100.0은 정상적인 0행 결과다. 입력 행 수=선택 행 수+제외 행 수가 맞아야 한다.
+- [x] 데이터 출처와 기본 점검 기록: 178행·13 feature인지 확인한다. 결측이 없어도 열별 0개를 기록한다.
+- [x] wine_summary.json, wine_filtered.csv, wine_group_summary.csv: 13.0 조건은 92행이다. 모든 결과 행의 alcohol이 조건을 만족하고 row_id가 원본과 대응해야 한다.
+- [ x validation_results.csv와 실행 README: 100.0은 정상적인 0행 결과다. 입력 행 수=선택 행 수+제외 행 수가 맞아야 한다.
 
 증빙 경로·링크:
+- 실행 코드: src/wine_cli.py, week01/L05_prepare_wine_data.py, week01/L05_validate_wine.py
+- 산출물: outputs/week01/wine_summary.json, outputs/week01/wine_filtered.csv, outputs/week01/wine_group_summary.csv
+- 검증·안내 문서: week01/L05_data_inspection.md, week01/validation_results.csv, week01/error_cases.csv, week01/L05_RUN_README.md

@@ -1,0 +1,4 @@
+case,expected,actual,evidence
+alcohol >= 13.0,"loop_count=92, sum_check=178","input=178, output=92, excluded=86",>> [성공] 총 178행 중 92행 선택 완료 -> ../outputs/week01
+alcohol >= 14.0,"loop_count=22, sum_check=178","input=178, output=22, excluded=156",>> [성공] 총 178행 중 22행 선택 완료 -> ../outputs/week01
+alcohol >= 100.0,"loop_count=0, sum_check=178","input=178, output=0, excluded=178",>> [성공] 총 178행 중 0행 선택 완료 -> ../outputs/week01
