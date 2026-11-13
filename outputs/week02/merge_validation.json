@@ -1,0 +1,20 @@
+{
+  "normal_many_to_one_merge": {
+    "join_key": "Pclass",
+    "how": "left",
+    "validate_rule": "many_to_one",
+    "rows_before": 534,
+    "rows_after": 534,
+    "passenger_id_preserved": true,
+    "added_to_model_features": false,
+    "note": "연습용 집계 열(train_rows, mean_fare)은 모델 학습 feature에 추가하지 않음"
+  },
+  "duplicate_right_key_experiment": {
+    "description": "오른쪽 테이블에 Pclass=1 키가 2번 중복될 때 1:N 카테시안 곱으로 행 수가 팽창하는 현상 재현",
+    "left_rows_before": 5,
+    "left_pclass_1_count": 0,
+    "right_rows_with_dup_key": 4,
+    "rows_after_merge": 5,
+    "row_increase": 0
+  }
+}

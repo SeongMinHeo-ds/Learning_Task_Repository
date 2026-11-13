@@ -4,11 +4,14 @@
 
 ## L06 입력 확인·분할 후 pandas 점검
 
-- [ ] 입력 역할 표, split_info.json 초안: Kaggle test.csv와 예시 제출 파일을 정답으로 사용하지 않는다.
-- [ ] data_report.md, train_group_summary.csv: 전체 891행 통계와 train 전용 통계를 혼동하지 않는다.
-- [ ] merge_validation.json: 정상 결합 전후 534행과 PassengerId 대응이 유지된다. 연습용 집계 열은 모델 feature에 추가하지 않는다.
+- [x] 입력 역할 표, split_info.json 초안: Kaggle test.csv와 예시 제출 파일을 정답으로 사용하지 않는다.
+- [x] data_report.md, train_group_summary.csv: 전체 891행 통계와 train 전용 통계를 혼동하지 않는다.
+- [x] merge_validation.json: 정상 결합 전후 534행과 PassengerId 대응이 유지된다. 연습용 집계 열은 모델 feature에 추가하지 않는다.
 
 증빙 경로·링크:
+- 실행 코드: week02/L06_prepare_and_check.py
+- 역할·출처 기록: week02/L06_input_roles.md
+- 산출물: outputs/week02/split_info.json, outputs/week02/data_report.md, outputs/week02/train_group_summary.csv, outputs/week02/merge_validation.json
 
 ## L07 분할 고정·baseline 평가
 
